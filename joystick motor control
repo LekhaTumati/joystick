@@ -1,0 +1,59 @@
+#include <Servo.h>
+int x = A0;
+int y = A1;
+int s = 3; 
+int xSpin = 9;
+int ySpin = 10;  
+int WVx;
+int WVy;    
+int xVal;
+int yVal;
+int sVal;  
+int dt = 200;
+int buzz = 7;
+Servo xServo;
+Servo yServo;
+
+void setup() {
+  // put your setup code here, to run once:
+Serial.begin(9600);
+pinMode(x, INPUT);
+pinMode(y, INPUT);
+pinMode(s, INPUT);
+pinMode(xSpin, OUTPUT);
+pinMode(ySpin, OUTPUT);
+pinMode(buzz, OUTPUT);
+xServo.attach(xSpin);
+yServo.attach(ySpin);
+
+digitalWrite(s, HIGH);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+xVal = analogRead(x);
+WVx = (180./1023.)*xVal;
+yVal = analogRead(y);
+WVy = (180./1023.)*yVal;      
+sVal = digitalRead(s);
+xServo.write(WVx);
+yServo.write(WVy);
+
+if(sVal == 0)
+{
+  digitalWrite(buzz, HIGH);
+}
+else
+{
+  digitalWrite(buzz, LOW);
+}
+
+delay(dt);
+Serial.print("x Value = ");
+Serial.print(xVal );
+Serial.print(" y value = ");
+Serial.print(yVal );
+Serial.print(" Switch state is ");
+Serial.println(sVal );
+
+}
